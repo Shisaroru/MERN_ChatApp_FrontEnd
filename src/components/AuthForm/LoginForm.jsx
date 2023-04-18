@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import axios from 'axios'
+import { Link, useNavigate } from 'react-router-dom'
 
-import styles from './LoginForm.module.css'
+import styles from './AuthForm.module.css'
+
+import { GlobalState } from '../../GlobalState'
 
 function LoginForm() {
     const [payloads, setPayloads] = useState({
@@ -9,15 +12,21 @@ function LoginForm() {
         password: "",
     })
 
+    const data = useContext(GlobalState);
+    const navigate = useNavigate();
+
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
             const result = await axios.post("/api/user/login", payloads);
             console.log(result.data);
+            data.accessToken.current = result.data.accessToken;
+            data.user.current = result.data.user;
+            console.log(data);
+            return navigate("/chat");
         } catch (error) {
             console.log(error.response.data);
         }
-        
     }
 
     return (
@@ -49,7 +58,7 @@ function LoginForm() {
             </button>
             <div>
                 Don't have an account yet?
-                <a href="#" id={styles.register}>Register</a>
+                <Link to="/register" id={styles.navigate}>Register</Link>
             </div>
         </form>
     )

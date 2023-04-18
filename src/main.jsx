@@ -3,8 +3,12 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
 
+import DataProvider from './GlobalState'
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <DataProvider>
+      <App />
+    </DataProvider>
   </React.StrictMode>,
 )

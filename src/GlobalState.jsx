@@ -1,9 +1,32 @@
-import React from 'react'
+import { createContext, useRef, useEffect } from 'react'
+import axios from 'axios';
 
-function GlobalState() {
+export const GlobalState = createContext();
+
+function DataProvider(props) {
+  let accessToken = useRef("");
+  let user = useRef({});
+
+  useEffect(() => {
+    async function getAccessToken() {
+      const result = await axios.post("/api/user/refresh_token");
+      accessToken.current = result.data.accessToken;
+      user.current = result.data.user;
+    };
+
+    getAccessToken();
+  }, [])
+
+  const data = {
+    accessToken,
+    user,
+  };
+
   return (
-    <div>GlobalState</div>
+    <GlobalState.Provider value={data}>
+      {props.children}
+    </GlobalState.Provider>
   )
 }
 
-export default GlobalState
+export default DataProvider
