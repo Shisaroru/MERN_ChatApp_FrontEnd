@@ -9,15 +9,14 @@ import MainPage from "./pages/MainPage/MainPage";
 
 export default function App() {
   const data = useContext(GlobalState);
-
-  console.log(data);
+  const [login, setLogin] = data.loginStatus;
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" exact element={data.accessToken.current ? <Navigate replace to="/chat"/> : <Login /> }/>
-        <Route path="/register" exact element={data.accessToken.current ? <Navigate replace to="/chat"/> : <Register />} />
-        <Route path="/chat" exact element={<MainPage />} />
+        <Route path="/" exact element={login ? <Navigate replace to="/chat"/> : <Login /> }/>
+        <Route path="/register" exact element={login ? <Navigate replace to="/chat"/> : <Register />} />
+        <Route path="/chat" element={!login ? <Navigate replace to="/" /> : <MainPage />} />
       </Routes>
     </BrowserRouter>
   );

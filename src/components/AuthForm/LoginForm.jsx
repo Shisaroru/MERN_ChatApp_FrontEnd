@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react'
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import styles from './AuthForm.module.css'
 
@@ -13,7 +13,7 @@ function LoginForm() {
     })
 
     const data = useContext(GlobalState);
-    const navigate = useNavigate();
+    const [login, setLogin] = data.loginStatus;
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -22,8 +22,7 @@ function LoginForm() {
             console.log(result.data);
             data.accessToken.current = result.data.accessToken;
             data.user.current = result.data.user;
-            console.log(data);
-            return navigate("/chat");
+            setLogin(true);
         } catch (error) {
             console.log(error.response.data);
         }

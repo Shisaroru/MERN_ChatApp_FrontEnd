@@ -1,0 +1,37 @@
+.groupTile {
+  min-height: 10%;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  align-items: center;
+  justify-items: center;
+  transition: all 0.25s ease-out;
+}
+
+.groupTile:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.groupIcon {
+  font-size: 2em;
+}
+
+.groupName {
+  font-size: 1em !important;
+}
+
+.groupText > * {
+  margin: 10px 0;
+  font-size: 0.8em;
+}
+
+.groupText {
+  width: 100%;
+}
+
+.groupMessage {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  color: rgba(0, 0, 0, 0.6);
+}

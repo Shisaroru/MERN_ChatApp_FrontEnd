@@ -1,8 +1,16 @@
-import React from 'react'
+import React from 'react';
+
+import SideNav from '../../components/SideNav/SideNav';
+import GroupList from '../../components/GroupList/GroupList';
+
+import styles from './MainPage.module.css';
 
 function MainPage() {
   return (
-    <div>MainPage</div>
+    <section id={styles.grid_container}>
+      <SideNav></SideNav>
+      <GroupList></GroupList>
+    </section>
   )
 }
 

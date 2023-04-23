@@ -1,17 +1,23 @@
-import { createContext, useRef, useEffect } from 'react'
+import { createContext, useRef, useEffect, useState } from 'react'
 import axios from 'axios';
 
 export const GlobalState = createContext();
 
 function DataProvider(props) {
-  let accessToken = useRef("");
-  let user = useRef({});
+  const accessToken = useRef("");
+  const user = useRef({});
+  const [login, setLogin] = useState(false);
 
   useEffect(() => {
     async function getAccessToken() {
-      const result = await axios.post("/api/user/refresh_token");
-      accessToken.current = result.data.accessToken;
-      user.current = result.data.user;
+      try {
+        const result = await axios.post("/api/user/refresh_token");
+        accessToken.current = result.data.accessToken;
+        user.current = result.data.user;
+        setLogin(true);
+      } catch (err) {
+        console.log(err);
+      }
     };
 
     getAccessToken();
@@ -20,6 +26,7 @@ function DataProvider(props) {
   const data = {
     accessToken,
     user,
+    loginStatus: [login, setLogin],
   };
 
   return (

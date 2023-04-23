@@ -15,6 +15,7 @@ function RegisterForm() {
     })
 
     const data = useContext(GlobalState);
+    const [login, setLogin] = data.loginStatus;
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -22,8 +23,8 @@ function RegisterForm() {
             const result = await axios.post("/api/user/register", payloads);
             console.log(result.data);
             data.accessToken.current = result.data.accessToken;
-            // data.user.current = result.data.user;
-            return redirect("/chat");
+            data.user.current = result.data.user;
+            setLogin(true);
         } catch (error) {
             console.log(error.response.data);
         }

@@ -1,0 +1,5 @@
+#grid_container {
+  display: grid;
+  grid-template-columns: 1fr 6fr 12fr;
+  min-height: 100vh;
+}
