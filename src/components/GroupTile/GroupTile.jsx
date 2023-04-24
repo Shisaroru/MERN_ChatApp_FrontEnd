@@ -1,6 +1,7 @@
 import { useRef, useContext } from 'react';
 import { FaRegUserCircle } from 'react-icons/fa';
 import TimeAgo from 'timeago-react';
+import { useNavigate } from 'react-router-dom';
 
 import { GlobalState } from '../../GlobalState';
 
@@ -9,11 +10,14 @@ import styles from './GroupTile.module.css';
 function GroupTile({ groupData }) {
     const data = useContext(GlobalState);
     const groupName = useRef(groupData.name.split(','));
+    const navigate = useNavigate();
 
+    const changeGroup = (e) => {
+        navigate(`/chat/${groupData._id}`);
+    }
 
-    console.log(groupData, data.user.current.name);
     return (
-        <div className={styles.groupTile}>
+        <div className={styles.groupTile} onClick={changeGroup}>
             <FaRegUserCircle className={styles.groupIcon}></FaRegUserCircle>
             <div className={styles.groupText}>
                 <p className={styles.groupName}>

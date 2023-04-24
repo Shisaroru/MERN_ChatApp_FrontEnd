@@ -1,7 +1,6 @@
-import React from 'react';
-
 import SideNav from '../../components/SideNav/SideNav';
 import GroupList from '../../components/GroupList/GroupList';
+import ChatBox from '../../components/ChatBox/ChatBox';
 
 import styles from './MainPage.module.css';
 
@@ -10,6 +9,7 @@ function MainPage() {
     <section id={styles.grid_container}>
       <SideNav></SideNav>
       <GroupList></GroupList>
+      <ChatBox></ChatBox>
     </section>
   )
 }

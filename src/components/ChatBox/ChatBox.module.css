@@ -1,0 +1,40 @@
+.container {
+  display: grid;
+  grid-template-rows: 1fr 8fr 1fr;
+  width: 100%;
+  height: 100vh;
+}
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 10px 15px;
+  gap: 10px;
+  background-color: rgba(134, 156, 189, 0.3);
+}
+
+#container {
+  overflow: auto;
+}
+
+.chatContainer > .sendByMe {
+  align-self: end;
+  background-color: rgba(95, 154, 245, 0.4);
+}
+
+.chatContainer > .notByMe {
+  align-self: start;
+  background-color: white;
+}
+
+.chatContainer > div {
+  padding: 5px 15px;
+  border: 1px solid blue;
+  border-radius: 10px;
+}
+
+.time {
+  font-size: 0.7em;
+  color: grey;
+}

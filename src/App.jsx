@@ -14,9 +14,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" exact element={login ? <Navigate replace to="/chat"/> : <Login /> }/>
-        <Route path="/register" exact element={login ? <Navigate replace to="/chat"/> : <Register />} />
-        <Route path="/chat" element={!login ? <Navigate replace to="/" /> : <MainPage />} />
+        <Route path="/" exact element={login ? <Navigate replace to="/chat/123"/> : <Login /> }/>
+        <Route path="/register" exact element={login ? <Navigate replace to="/chat/123"/> : <Register />} />
+        <Route path="/chat/:id" element={!login ? <Navigate replace to="/" /> : <MainPage />} />
       </Routes>
     </BrowserRouter>
   );

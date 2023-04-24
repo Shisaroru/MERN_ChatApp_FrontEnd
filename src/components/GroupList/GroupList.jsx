@@ -19,7 +19,6 @@ function GroupList() {
                 "groupList": user.groupList,
             });
 
-            console.log(response.data.result);
             setGroups(response.data.result);
         } 
         getGroups();
