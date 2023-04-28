@@ -1,5 +1,6 @@
-import { createContext, useRef, useEffect, useState } from 'react'
-import axios from 'axios';
+import { createContext, useRef, useEffect, useState } from "react";
+import axios from "axios";
+import { io } from "socket.io-client";
 
 export const GlobalState = createContext();
 
@@ -7,6 +8,7 @@ function DataProvider(props) {
   const accessToken = useRef("");
   const user = useRef({});
   const [login, setLogin] = useState(false);
+  const socket = useRef(null);
 
   useEffect(() => {
     async function getAccessToken() {
@@ -18,10 +20,11 @@ function DataProvider(props) {
       } catch (err) {
         console.log(err);
       }
-    };
+    }
 
+    socket.current = io("ws://localhost:8080");
     getAccessToken();
-  }, [])
+  }, []);
 
   const data = {
     accessToken,
@@ -30,10 +33,8 @@ function DataProvider(props) {
   };
 
   return (
-    <GlobalState.Provider value={data}>
-      {props.children}
-    </GlobalState.Provider>
-  )
+    <GlobalState.Provider value={data}>{props.children}</GlobalState.Provider>
+  );
 }
 
-export default DataProvider
+export default DataProvider;
