@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 
 import { GlobalState } from "../../GlobalState";
@@ -10,9 +10,16 @@ function ChatInput({ params, setter }) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = setter;
 
-  data.socket.current.on("newMessage", (arg) => {
-    setMessages([...messages, arg]);
-  });
+  useEffect(() => {
+    function receivedMessage(arg) {
+      setMessages([...messages, arg]);
+    }
+    data.socket.current.on("newMessage", receivedMessage);
+
+    return () => {
+      data.socket.current.off("newMessage", receivedMessage);
+    };
+  }, []);
 
   const sendMessage = async (e) => {
     e.preventDefault();

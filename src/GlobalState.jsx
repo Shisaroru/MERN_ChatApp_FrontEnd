@@ -34,15 +34,25 @@ function DataProvider(props) {
           groupList: user.current.groupList,
         });
 
-        socket.current = io("ws://localhost:8080", {
-          auth: {
-            token: accessToken.current,
-          },
+        if (socket.current === null) {
+          socket.current = io("ws://localhost:8080", {
+            auth: {
+              token: accessToken.current,
+            },
+          });
+        }
+        socket.current.on("connect_error", (err) => {
+          console.log(err.message); // prints the message associated with the error
         });
 
         socket.current.emit("joined_groups", groupsResponse.data.result);
 
         setGroups(groupsResponse.data.result);
+
+        return () => {
+          socket.current.disconnect();
+          socket.current.removeAllListeners("connect_error");
+        };
       } catch (error) {
         console.log(error);
       }
