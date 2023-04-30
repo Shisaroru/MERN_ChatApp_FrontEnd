@@ -10,11 +10,13 @@ import styles from "./ChatBox.module.css";
 
 function ChatBox() {
   const [messages, setMessages] = useState([]);
-  const [groupData, setGroupData] = useState(false);
+  const [group, setGroup] = useState({});
+  const [groupName, setGroupName] = useState([]);
+  const scrollChat = useRef(null);
+
   const params = useParams();
   const data = useContext(GlobalState);
-
-  const [groupName, setGroupName] = useState(["1", "2"]);
+  const [groups, setGroups] = data.groupsData;
 
   useEffect(() => {
     async function getMessages() {
@@ -22,11 +24,13 @@ function ChatBox() {
         const response = await axios.post("/api/message", {
           groupId: params.id,
         });
-        const group = await axios.post("/api/group", {
-          id: params.id,
+        const found = groups.find((element) => {
+          return element._id === params.id;
         });
+
+        setGroupName(found.name.split(","));
+        setGroup(found);
         setMessages(response.data.messagesList);
-        setGroupData(group.data.result);
       } catch (error) {
         console.log(error);
       }
@@ -35,17 +39,15 @@ function ChatBox() {
   }, [params.id]);
 
   useEffect(() => {
-    if (groupData) {
-      setGroupName(groupData.name.split(","));
-    }
-  }, [groupData]);
+    scrollChat.current.scrollBy(0, window.innerHeight);
+  }, [messages]);
 
   return (
     <div className={styles.container}>
       <p>
         {groupName[0] === data.user.current.name ? groupName[1] : groupName[0]}
       </p>
-      <div id={styles.container}>
+      <div id={styles.container} ref={scrollChat}>
         <div className={styles.chatContainer}>
           {messages.map((message) => {
             const date = new Date(message.createdAt);
@@ -67,7 +69,10 @@ function ChatBox() {
           })}
         </div>
       </div>
-      <ChatInput params={params.id}></ChatInput>
+      <ChatInput
+        params={params.id}
+        setter={[messages, setMessages]}
+      ></ChatInput>
     </div>
   );
 }

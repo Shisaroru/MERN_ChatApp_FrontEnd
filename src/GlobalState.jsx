@@ -7,6 +7,7 @@ export const GlobalState = createContext();
 function DataProvider(props) {
   const accessToken = useRef("");
   const user = useRef({});
+  const [groups, setGroups] = useState([]);
   const [login, setLogin] = useState(false);
   const socket = useRef(null);
 
@@ -16,20 +17,46 @@ function DataProvider(props) {
         const result = await axios.post("/api/user/refresh_token");
         accessToken.current = result.data.accessToken;
         user.current = result.data.user;
+
         setLogin(true);
       } catch (err) {
         console.log(err);
       }
     }
 
-    socket.current = io("ws://localhost:8080");
     getAccessToken();
   }, []);
+
+  useEffect(() => {
+    async function initialize() {
+      try {
+        const groupsResponse = await axios.post("/api/group/all", {
+          groupList: user.current.groupList,
+        });
+
+        socket.current = io("ws://localhost:8080", {
+          auth: {
+            token: accessToken.current,
+          },
+        });
+
+        socket.current.emit("joined_groups", groupsResponse.data.result);
+
+        setGroups(groupsResponse.data.result);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    initialize();
+  }, [login]);
 
   const data = {
     accessToken,
     user,
+    groupsData: [groups, setGroups],
     loginStatus: [login, setLogin],
+    socket,
   };
 
   return (

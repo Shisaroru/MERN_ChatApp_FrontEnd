@@ -1,40 +1,25 @@
-import { useState, useContext, useEffect } from 'react'
-import axios from 'axios';
+import { useContext } from "react";
+import axios from "axios";
 
-import { GlobalState } from '../../GlobalState'
+import { GlobalState } from "../../GlobalState";
 
-import GroupTile from '../GroupTile/GroupTile';
+import GroupTile from "../GroupTile/GroupTile";
 
-import styles from './GroupList.module.css';
+import styles from "./GroupList.module.css";
 
 function GroupList() {
-    const [groups, setGroups] = useState([]);
+  const data = useContext(GlobalState);
+  const [groups, setGroups] = data.groupsData;
 
-    const data = useContext(GlobalState);
-    const user = data.user.current;
-
-    useEffect(() => {
-        async function getGroups() {
-            const response = await axios.post('/api/group/all', {
-                "groupList": user.groupList,
-            });
-
-            setGroups(response.data.result);
-        } 
-        getGroups();
-    }, []);
-
-    return (
-        <div className={styles.container}>
-            {
-                groups.map((group) => {
-                    return (
-                        <GroupTile key={group._id} groupData={group}></GroupTile>
-                    );
-                })
-            }
-        </div>
-    )
+  return (
+    <div className={styles.container}>
+      {groups
+        ? groups.map((group) => {
+            return <GroupTile key={group._id} groupData={group}></GroupTile>;
+          })
+        : null}
+    </div>
+  );
 }
 
-export default GroupList
+export default GroupList;
