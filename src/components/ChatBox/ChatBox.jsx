@@ -21,6 +21,9 @@ function ChatBox() {
   useEffect(() => {
     async function getMessages() {
       try {
+        if (!params.id) {
+          return;
+        }
         const response = await axios.post("/api/message", {
           groupId: params.id,
         });
@@ -39,41 +42,52 @@ function ChatBox() {
   }, [params.id]);
 
   useEffect(() => {
-    scrollChat.current.scrollBy(0, window.innerHeight);
+    if (!params.id) {
+      return;
+    }
+    scrollChat.current.scroll(0, scrollChat.current.scrollHeight);
   }, [messages]);
 
   return (
-    <div className={styles.container}>
-      <p>
-        {groupName[0] === data.user.current.name ? groupName[1] : groupName[0]}
-      </p>
-      <div id={styles.container} ref={scrollChat}>
-        <div className={styles.chatContainer}>
-          {messages.map((message) => {
-            const date = new Date(message.createdAt);
-            return (
-              <div
-                key={message._id}
-                className={
-                  data.user.current._id === message.sender
-                    ? styles.sendByMe
-                    : styles.notByMe
-                }
-              >
-                {message.message}
-                <p className={styles.time}>
-                  {date.getHours() + ":" + date.getMinutes()}
-                </p>
-              </div>
-            );
-          })}
+    <>
+      {params.id ? (
+        <div className={styles.container}>
+          <p>
+            {groupName[0] === data.user.current.name
+              ? groupName[1]
+              : groupName[0]}
+          </p>
+          <div id={styles.container} ref={scrollChat}>
+            <div className={styles.chatContainer}>
+              {messages.map((message) => {
+                const date = new Date(message.createdAt);
+                return (
+                  <div
+                    key={message._id}
+                    className={
+                      data.user.current._id === message.sender
+                        ? styles.sendByMe
+                        : styles.notByMe
+                    }
+                  >
+                    {message.message}
+                    <p className={styles.time}>
+                      {date.getHours() + ":" + date.getMinutes()}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <ChatInput
+            params={params.id}
+            setter={[messages, setMessages]}
+          ></ChatInput>
         </div>
-      </div>
-      <ChatInput
-        params={params.id}
-        setter={[messages, setMessages]}
-      ></ChatInput>
-    </div>
+      ) : (
+        <div id={styles.noGroup}>Add friend and chat now</div>
+      )}
+    </>
   );
 }
 

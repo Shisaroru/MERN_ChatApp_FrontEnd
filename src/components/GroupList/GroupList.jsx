@@ -12,33 +12,34 @@ function GroupList() {
 
   useEffect(() => {
     function updatedGroups(arg) {
-      console.log("Event fired");
       const newGroups = groups;
       if (!newGroups) {
         return;
       }
-      console.log(newGroups);
+
       const index = newGroups.findIndex(
-        (element) => element.receiver === arg.receiver
+        (element) => element._id === arg.receiver
       );
 
       const [removeElement] = newGroups.splice(index, 1);
 
       removeElement.latestMessage = arg.message;
       removeElement.updatedAt = arg.createdAt;
-      console.log(removeElement, newGroups);
 
       setGroups([removeElement, ...newGroups]);
     }
-
-    data.socket.current.on("newMessage", updatedGroups);
-    data.socket.current.on("newGroup", updatedGroups);
+    if (data.socket) {
+      data.socket.on("newMessage", updatedGroups);
+      data.socket.on("newGroup", updatedGroups);
+    }
 
     return () => {
-      data.socket.current.off("newGroup", updatedGroups);
-      data.socket.current.off("newMessage", updatedGroups);
+      if (data.socket) {
+        data.socket.off("newGroup", updatedGroups);
+        data.socket.off("newMessage", updatedGroups);
+      }
     };
-  }, [groups]);
+  }, [groups, data.socket]);
 
   return (
     <div className={styles.container}>

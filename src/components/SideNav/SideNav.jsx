@@ -26,16 +26,37 @@ function SideNav() {
 
   return (
     <div id={styles.container}>
-      <NavLink to="">
+      <NavLink to="" className={styles.navLink}>
         <FaRegUserCircle></FaRegUserCircle>
       </NavLink>
-      <NavLink to="">
+      <NavLink
+        to="/chat"
+        className={({ isActive, isPending }) =>
+          isActive
+            ? styles.navLink + " " + styles.navLinkActive
+            : styles.navLink
+        }
+      >
         <FaCommentAlt></FaCommentAlt>
       </NavLink>
-      <NavLink to="">
+      <NavLink
+        to="/contact"
+        className={({ isActive, isPending }) =>
+          isActive
+            ? styles.navLink + " " + styles.navLinkActive
+            : styles.navLink
+        }
+      >
         <FaRegAddressBook></FaRegAddressBook>
       </NavLink>
-      <NavLink to="">
+      <NavLink
+        to="/search"
+        className={({ isActive, isPending }) =>
+          isActive
+            ? styles.navLink + " " + styles.navLinkActive
+            : styles.navLink
+        }
+      >
         <FaSearch></FaSearch>
       </NavLink>
       <button id={styles.signOut} type="button" onClick={signOut}>

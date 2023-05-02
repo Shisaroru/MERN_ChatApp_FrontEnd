@@ -9,7 +9,7 @@ function DataProvider(props) {
   const user = useRef({});
   const [groups, setGroups] = useState([]);
   const [login, setLogin] = useState(false);
-  const socket = useRef(null);
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     async function getAccessToken() {
@@ -34,24 +34,28 @@ function DataProvider(props) {
           groupList: user.current.groupList,
         });
 
-        if (socket.current === null) {
-          socket.current = io("ws://localhost:8080", {
+        if (socket === null && accessToken.current !== "") {
+          const newSocket = io("ws://localhost:8080", {
             auth: {
               token: accessToken.current,
             },
           });
-        }
-        socket.current.on("connect_error", (err) => {
-          console.log(err.message); // prints the message associated with the error
-        });
 
-        socket.current.emit("joined_groups", groupsResponse.data.result);
+          newSocket.on("connect_error", (err) => {
+            console.log(err.message); // prints the message associated with the error
+          });
+
+          newSocket.emit("joined_groups", groupsResponse.data.result);
+          setSocket(newSocket);
+        }
 
         setGroups(groupsResponse.data.result);
 
         return () => {
-          socket.current.disconnect();
-          socket.current.removeAllListeners("connect_error");
+          if (socket) {
+            socket.disconnect();
+            socket.removeAllListeners("connect_error");
+          }
         };
       } catch (error) {
         console.log(error);

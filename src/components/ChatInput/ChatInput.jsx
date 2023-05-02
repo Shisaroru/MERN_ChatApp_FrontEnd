@@ -14,12 +14,17 @@ function ChatInput({ params, setter }) {
     function receivedMessage(arg) {
       setMessages([...messages, arg]);
     }
-    data.socket.current.on("newMessage", receivedMessage);
+
+    if (data.socket) {
+      data.socket.on("newMessage", receivedMessage);
+    }
 
     return () => {
-      data.socket.current.off("newMessage", receivedMessage);
+      if (data.socket) {
+        data.socket.off("newMessage", receivedMessage);
+      }
     };
-  }, []);
+  }, [messages, data.socket]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -35,11 +40,11 @@ function ChatInput({ params, setter }) {
         senderName: data.user.current.name,
         message: message,
         receiver: params,
-        createdAt: Date.now(),
+        createdAt: new Date(Date.now()),
         _id: Date.now(),
       };
 
-      data.socket.current.emit("sendMessage", newMessage);
+      data.socket.emit("sendMessage", newMessage);
 
       setMessage("");
       setMessages([...messages, newMessage]);

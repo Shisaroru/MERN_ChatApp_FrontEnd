@@ -6,6 +6,7 @@ import { GlobalState } from "./GlobalState";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import MainPage from "./pages/MainPage/MainPage";
+import Search from "./pages/Search/Search";
 
 export default function App() {
   const data = useContext(GlobalState);
@@ -14,9 +15,24 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" exact element={login ? <Navigate replace to="/chat/123"/> : <Login /> }/>
-        <Route path="/register" exact element={login ? <Navigate replace to="/chat/123"/> : <Register />} />
-        <Route path="/chat/:id" element={!login ? <Navigate replace to="/" /> : <MainPage />} />
+        <Route
+          path="/"
+          exact
+          element={login ? <Navigate replace to="/chat" /> : <Login />}
+        />
+        <Route
+          path="/register"
+          exact
+          element={login ? <Navigate replace to="/chat" /> : <Register />}
+        />
+        <Route
+          path="/chat/:id?"
+          element={!login ? <Navigate replace to="/" /> : <MainPage />}
+        />
+        <Route
+          path="/search"
+          element={!login ? <Navigate replace to="/" /> : <Search />}
+        />
       </Routes>
     </BrowserRouter>
   );
