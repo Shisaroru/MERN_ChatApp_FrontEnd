@@ -15,8 +15,10 @@ function ChatBox() {
   const scrollChat = useRef(null);
 
   const params = useParams();
+
   const data = useContext(GlobalState);
   const [groups, setGroups] = data.groupsData;
+  const [user, setUser] = data.user;
 
   useEffect(() => {
     async function getMessages() {
@@ -52,11 +54,7 @@ function ChatBox() {
     <>
       {params.id ? (
         <div className={styles.container}>
-          <p>
-            {groupName[0] === data.user.current.name
-              ? groupName[1]
-              : groupName[0]}
-          </p>
+          <p>{groupName[0] === user.name ? groupName[1] : groupName[0]}</p>
           <div id={styles.container} ref={scrollChat}>
             <div className={styles.chatContainer}>
               {messages.map((message) => {
@@ -65,7 +63,7 @@ function ChatBox() {
                   <div
                     key={message._id}
                     className={
-                      data.user.current._id === message.sender
+                      user._id === message.sender
                         ? styles.sendByMe
                         : styles.notByMe
                     }

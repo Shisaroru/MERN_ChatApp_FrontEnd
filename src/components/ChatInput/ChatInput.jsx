@@ -7,6 +7,8 @@ import styles from "./ChatInput.module.css";
 
 function ChatInput({ params, setter }) {
   const data = useContext(GlobalState);
+  const [user, setUser] = data.user;
+
   const [message, setMessage] = useState("");
   const [messages, setMessages] = setter;
 
@@ -30,14 +32,14 @@ function ChatInput({ params, setter }) {
     e.preventDefault();
     try {
       await axios.post("/api/message/send", {
-        sender: data.user.current._id,
-        senderName: data.user.current.name,
+        sender: user._id,
+        senderName: user.name,
         message: message,
         groupId: params,
       });
       const newMessage = {
-        sender: data.user.current._id,
-        senderName: data.user.current.name,
+        sender: user._id,
+        senderName: user.name,
         message: message,
         receiver: params,
         createdAt: new Date(Date.now()),

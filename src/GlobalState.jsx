@@ -6,7 +6,7 @@ export const GlobalState = createContext();
 
 function DataProvider(props) {
   const accessToken = useRef("");
-  const user = useRef({});
+  const [user, setUser] = useState({});
   const [groups, setGroups] = useState([]);
   const [login, setLogin] = useState(false);
   const [socket, setSocket] = useState(null);
@@ -16,7 +16,7 @@ function DataProvider(props) {
       try {
         const result = await axios.post("/api/user/refresh_token");
         accessToken.current = result.data.accessToken;
-        user.current = result.data.user;
+        setUser(result.data.user);
 
         setLogin(true);
       } catch (err) {
@@ -31,7 +31,7 @@ function DataProvider(props) {
     async function initialize() {
       try {
         const groupsResponse = await axios.post("/api/group/all", {
-          groupList: user.current.groupList,
+          groupList: user.groupList,
         });
 
         if (socket === null && accessToken.current !== "") {
@@ -52,6 +52,7 @@ function DataProvider(props) {
         setGroups(groupsResponse.data.result);
 
         return () => {
+          console.log("Clean up GlobalState");
           if (socket) {
             socket.disconnect();
             socket.removeAllListeners("connect_error");
@@ -63,11 +64,11 @@ function DataProvider(props) {
     }
 
     initialize();
-  }, [login]);
+  }, [login, user]);
 
   const data = {
     accessToken,
-    user,
+    user: [user, setUser],
     groupsData: [groups, setGroups],
     loginStatus: [login, setLogin],
     socket,

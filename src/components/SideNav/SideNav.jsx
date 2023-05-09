@@ -16,10 +16,13 @@ import { GlobalState } from "../../GlobalState";
 function SideNav() {
   const data = useContext(GlobalState);
   const [login, setLogin] = data.loginStatus;
+  const [user, setUser] = data.user;
+  const socket = data.socket;
 
   const signOut = async (e) => {
     data.accessToken.current = "";
-    data.user.current = {};
+    setUser({});
+    socket.disconnect();
     await axios.post(`/api/user/logout`);
     setLogin(false);
   };

@@ -9,6 +9,8 @@ import styles from "./GroupTile.module.css";
 
 function GroupTile({ groupData }) {
   const data = useContext(GlobalState);
+  const [user, setUser] = data.user;
+
   const groupName = useRef(groupData.name.split(","));
   const navigate = useNavigate();
   const params = useParams();
@@ -31,7 +33,7 @@ function GroupTile({ groupData }) {
       <FaRegUserCircle className={styles.groupIcon}></FaRegUserCircle>
       <div className={styles.groupText}>
         <p className={styles.groupName}>
-          {groupName.current[0] === data.user.current.name
+          {groupName.current[0] === user.name
             ? groupName.current[1]
             : groupName.current[0]}
         </p>
