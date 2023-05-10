@@ -30,9 +30,21 @@ function DataProvider(props) {
   useEffect(() => {
     async function initialize() {
       try {
-        const groupsResponse = await axios.post("/api/group/all", {
-          groupList: user.groupList,
-        });
+        if (!accessToken.current) {
+          return;
+        }
+
+        const groupsResponse = await axios.post(
+          "/api/group/all",
+          {
+            groupList: user.groupList,
+          },
+          {
+            headers: {
+              Authorization: accessToken.current,
+            },
+          }
+        );
 
         if (socket === null && accessToken.current !== "") {
           const newSocket = io("ws://localhost:8080", {

@@ -26,9 +26,17 @@ function ChatBox() {
         if (!params.id) {
           return;
         }
-        const response = await axios.post("/api/message", {
-          groupId: params.id,
-        });
+        const response = await axios.post(
+          "/api/message",
+          {
+            groupId: params.id,
+          },
+          {
+            headers: {
+              Authorization: data.accessToken.current,
+            },
+          }
+        );
         const found = groups.find((element) => {
           return element._id === params.id;
         });
@@ -47,8 +55,23 @@ function ChatBox() {
     if (!params.id) {
       return;
     }
+    function receivedMessage(arg) {
+      if (params.id === arg.receiver) {
+        setMessages([...messages, arg]);
+      }
+    }
+
+    if (data.socket) {
+      data.socket.on("newMessage", receivedMessage);
+    }
     scrollChat.current.scroll(0, scrollChat.current.scrollHeight);
-  }, [messages]);
+
+    return () => {
+      if (data.socket) {
+        data.socket.off("newMessage", receivedMessage);
+      }
+    };
+  }, [messages, data.socket]);
 
   return (
     <>

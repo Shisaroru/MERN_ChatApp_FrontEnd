@@ -49,7 +49,11 @@ function Search() {
     async function searchUsers() {
       try {
         if (search.findBy && search.name) {
-          const response = await axios.post("/api/user/search", search);
+          const response = await axios.post("/api/user/search", search, {
+            headers: {
+              Authorization: data.accessToken.current,
+            },
+          });
           setUsers(response.data.result);
         }
       } catch (error) {
