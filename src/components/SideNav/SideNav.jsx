@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   FaRegUserCircle,
   FaCommentAlt,
@@ -18,13 +18,14 @@ function SideNav() {
   const [login, setLogin] = data.loginStatus;
   const [user, setUser] = data.user;
   const socket = data.socket;
+  const navigate = useNavigate();
 
   const signOut = async (e) => {
-    data.accessToken.current = "";
-    setUser({});
-    socket.disconnect();
     await axios.post(`/api/user/logout`);
+    socket.disconnect();
     setLogin(false);
+    setUser({});
+    data.accessToken.current = "";
   };
 
   return (

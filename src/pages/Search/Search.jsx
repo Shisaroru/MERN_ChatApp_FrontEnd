@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { FaRegUserCircle } from "react-icons/fa";
 
 import SideNav from "../../components/SideNav/SideNav";
+import SearchResultTile from "../../components/SearchResultTile/SearchResultTile";
 
 import { GlobalState } from "../../GlobalState";
 
@@ -20,29 +20,6 @@ function Search() {
 
   const formHandler = (e) => {
     e.preventDefault();
-  };
-
-  const addFriend = async (friendId) => {
-    try {
-      const result = await axios.patch("/api/user/add_friend", {
-        id: user._id,
-        friendId,
-      });
-
-      const newUsersList = users.map((user) => {
-        if (user._id === friendId) {
-          return {
-            ...user,
-            friendList: [...user.friendList, user._id],
-          };
-        }
-        return user;
-      });
-
-      setUsers(newUsersList);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   useEffect(() => {
@@ -101,22 +78,10 @@ function Search() {
           ? "Not found"
           : users.map((foundUser) => {
               return foundUser._id === user._id ? null : (
-                <div key={foundUser._id}>
-                  <FaRegUserCircle></FaRegUserCircle>
-                  <p>{foundUser.name}</p>
-                  {foundUser.friendList.includes(user._id) ? (
-                    <button type="button">Unfriend</button>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        addFriend(foundUser._id);
-                      }}
-                    >
-                      Add friend
-                    </button>
-                  )}
-                </div>
+                <SearchResultTile
+                  key={foundUser._id}
+                  resultUser={foundUser}
+                ></SearchResultTile>
               );
             })}
       </div>
