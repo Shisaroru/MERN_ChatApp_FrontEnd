@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import axios from "axios";
-import { FaRegUserCircle } from "react-icons/fa";
+import { FaRegUserCircle, FaTimesCircle } from "react-icons/fa";
 
 import { GlobalState } from "../../GlobalState";
 
@@ -9,6 +9,8 @@ import styles from "./SearchResultTile.module.css";
 function SearchResultTile({ resultUser }) {
   const data = useContext(GlobalState);
   const [user, setUser] = data.user;
+
+  const modalRef = useRef(null);
 
   const [modal, setModal] = useState(false);
   const [message, setMessage] = useState("");
@@ -146,53 +148,94 @@ function SearchResultTile({ resultUser }) {
   };
 
   return (
-    <div>
-      <FaRegUserCircle></FaRegUserCircle>
+    <div className={styles.container}>
+      <FaRegUserCircle className={styles.icon}></FaRegUserCircle>
       <h3>{resultUser.name}</h3>
       {alreadyFriend ? (
-        <button type="button" onClick={unfriend}>
+        <button
+          className={
+            styles.button + " " + styles.buttonRed + " " + styles.buttonGroup
+          }
+          type="button"
+          onClick={unfriend}
+        >
           Unfriend
         </button>
       ) : intersectRequests.length !== 0 ? (
-        <div>
-          <button type="button" onClick={acceptRequest}>
+        <div className={styles.buttonGroup}>
+          <button
+            className={styles.button + " " + styles.buttonGreen}
+            type="button"
+            onClick={acceptRequest}
+          >
             Accept request
           </button>
-          <button type="button" onClick={declineRequest}>
+          <button
+            className={styles.button + " " + styles.buttonRed}
+            type="button"
+            onClick={declineRequest}
+          >
             Decline
           </button>
         </div>
       ) : intersectSentRequests.length !== 0 ? (
-        <button type="button" onClick={cancelRequest}>
+        <button
+          className={
+            styles.button + " " + styles.buttonRed + " " + styles.buttonGroup
+          }
+          type="button"
+          onClick={cancelRequest}
+        >
           Cancel request
         </button>
       ) : (
-        <button type="button" onClick={(e) => setModal(true)}>
+        <button
+          className={
+            styles.button + " " + styles.buttonBlue + " " + styles.buttonGroup
+          }
+          type="button"
+          onClick={(e) => setModal(true)}
+        >
           Send request
         </button>
       )}
       {modal && (
-        <div className={styles.modal}>
-          <h3>Send request</h3>
-          <button
-            type="button"
-            onClick={(e) => {
-              setModal(false);
-              setMessage("");
-            }}
-          >
-            Close
-          </button>
-          <form onSubmit={sendRequest}>
-            <input
-              type="text"
-              name="message"
-              id="message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <button>Send</button>
-          </form>
+        <div
+          className={styles.modalContainer}
+          onClick={(e) => {
+            if (!modalRef.current || modalRef.current.contains(e.target)) {
+              return;
+            }
+            setModal(false);
+            setMessage("");
+          }}
+        >
+          <div className={styles.modal} ref={modalRef}>
+            <div>
+              <h3>Send request</h3>
+              <FaTimesCircle
+                className={styles.closeButton}
+                onClick={(e) => {
+                  setModal(false);
+                  setMessage("");
+                }}
+              ></FaTimesCircle>
+            </div>
+            <form className={styles.modalForm} onSubmit={sendRequest}>
+              <input
+                type="text"
+                name="message"
+                id="message"
+                placeholder="Say something to them"
+                value={message}
+                autoFocus
+                onChange={(e) => setMessage(e.target.value)}
+              />
+              <button className={styles.button + " " + styles.buttonBlue}>
+                Send
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </div>

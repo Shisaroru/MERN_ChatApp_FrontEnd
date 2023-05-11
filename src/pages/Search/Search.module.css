@@ -3,3 +3,18 @@
   grid-template-columns: 1fr 6fr 12fr;
   min-height: 100vh;
 }
+
+.result {
+  margin: 5px;
+  padding: 5px;
+}
+
+.input {
+  padding: 8px;
+  width: 50%;
+}
+
+.searchContainer {
+  padding: 5px;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+}

@@ -3,11 +3,114 @@
   width: 500px;
   height: 150px;
   border-radius: 10px;
-  background-color: rgb(0, 145, 255);
+  background-color: rgb(48, 48, 48);
   color: white;
   padding: 10px;
   border: 1px solid blue;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: grid;
+  grid-template-rows: 1fr 2fr;
+  align-items: center;
+}
+
+.modalContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vw;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal h3 {
+  margin: 0;
+}
+
+.closeButton {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: rgb(204, 69, 69);
+  background-color: white;
+  border-radius: 50px;
+  border: 1px solid rgb(204, 69, 69);
+  font-size: 1.7em;
+}
+
+.modalForm {
+  display: flex;
+}
+
+.modalForm input {
+  padding: 5px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.closeButton:hover {
+  color: rgba(204, 69, 69, 0.8);
+}
+
+.container {
+  width: 70%;
+  display: grid;
+  grid-template-columns: 1fr 4fr 4fr;
+  margin: 10px 0;
+  align-items: center;
+  border: 2px solid rgb(0, 145, 255);
+  border-radius: 10px;
+  background-color: rgba(207, 207, 207, 0.6);
+}
+
+.icon {
+  font-size: 2em;
+  justify-self: center;
+}
+
+.button {
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  margin: 0 5px;
+}
+
+.button:hover {
+  border: 2px solid rgb(0, 145, 255);
+}
+
+.buttonRed {
+  background-color: rgb(204, 69, 69);
+  color: white;
+  transition: background-color 0.15s ease-out;
+}
+
+.buttonRed:hover {
+  background-color: rgba(204, 69, 69, 0.8);
+}
+
+.buttonBlue {
+  background-color: rgb(0, 145, 255);
+  color: white;
+  transition: background-color 0.15s ease-out;
+}
+
+.buttonBlue:hover {
+  background-color: rgba(0, 145, 255, 0.8);
+}
+
+.buttonGroup {
+  justify-self: start;
+}
+
+.buttonGreen {
+  background-color: rgb(93, 212, 57);
+  color: white;
+  transition: background-color 0.15s ease-out;
+}
+
+.buttonGreen:hover {
+  background-color: rgba(93, 212, 57, 0.8);
 }

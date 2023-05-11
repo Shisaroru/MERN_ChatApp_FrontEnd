@@ -47,8 +47,13 @@ function Search() {
   return (
     <section id={styles.grid_container}>
       <SideNav></SideNav>
-      <form action="#" onSubmit={formHandler}>
+      <form
+        className={styles.searchContainer}
+        action="#"
+        onSubmit={formHandler}
+      >
         <select
+          className={styles.input}
           name="findBy"
           id="findBy"
           onChange={(e) => {
@@ -62,6 +67,7 @@ function Search() {
         </select>
         <label htmlFor="search"></label>
         <input
+          className={styles.input}
           type="text"
           name="search"
           id="search"
@@ -73,7 +79,7 @@ function Search() {
           required
         />
       </form>
-      <div>
+      <div className={styles.result}>
         {users.length === 0 && search.name !== ""
           ? "Not found"
           : users.map((foundUser) => {
