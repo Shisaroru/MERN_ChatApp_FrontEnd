@@ -7,6 +7,7 @@ import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import MainPage from "./pages/MainPage/MainPage";
 import Search from "./pages/Search/Search";
+import Contact from "./pages/Contact/Contact";
 
 export default function App() {
   const data = useContext(GlobalState);
@@ -32,6 +33,10 @@ export default function App() {
         <Route
           path="/search"
           element={!login ? <Navigate replace to="/" /> : <Search />}
+        />
+        <Route
+          path="/contact"
+          element={!login ? <Navigate replace to="/" /> : <Contact />}
         />
       </Routes>
     </BrowserRouter>

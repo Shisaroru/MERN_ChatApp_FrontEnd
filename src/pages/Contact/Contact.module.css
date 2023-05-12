@@ -1,0 +1,30 @@
+#grid_container {
+  display: grid;
+  grid-template-columns: 1fr 6fr 12fr;
+  min-height: 100vh;
+}
+
+.optionsContainer {
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  transition: background-color 0.15s ease-out;
+}
+
+.option:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.icon {
+  font-size: 1.3em;
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  width: 50px;
+}

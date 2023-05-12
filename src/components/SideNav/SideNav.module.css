@@ -23,11 +23,11 @@
 }
 
 .navLink:hover {
-  background-color: rgb(0, 135, 235);
+  background-color: rgb(2, 117, 201);
 }
 
 .navLinkActive {
-  background-color: rgb(0, 135, 235);
+  background-color: rgb(2, 117, 201);
 }
 
 #signOut {
@@ -42,5 +42,5 @@
 
 #signOut:hover {
   cursor: pointer;
-  background-color: rgb(0, 135, 235);
+  background-color: rgb(2, 117, 201);
 }
