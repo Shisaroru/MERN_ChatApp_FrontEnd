@@ -115,7 +115,7 @@ function SearchResultTile({ resultUser }) {
       setUser({
         ...user,
         groupList: [...user.groupList, result.data.createdGroup._id],
-        friendList: [...user.friendList, result.data.friendUser._id],
+        friendList: [...user.friendList, result.data.user._id],
         requests: newRequestArray,
       });
       setIntersectRequests([]);

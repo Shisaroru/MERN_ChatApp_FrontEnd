@@ -10,7 +10,7 @@ import styles from "./ChatBox.module.css";
 
 function ChatBox() {
   const [messages, setMessages] = useState([]);
-  const [group, setGroup] = useState({});
+  const [group, setGroup] = useState(null);
   const [groupName, setGroupName] = useState([]);
   const scrollChat = useRef(null);
 
@@ -19,6 +19,24 @@ function ChatBox() {
   const data = useContext(GlobalState);
   const [groups, setGroups] = data.groupsData;
   const [user, setUser] = data.user;
+  const [isFriend, setIsFriend] = useState(true);
+
+  useEffect(() => {
+    if (!user || !group) {
+      return;
+    }
+    if (group.members.length === 2) {
+      let friend;
+      if (group.members[0] === user._id) {
+        friend = group.members[1];
+      } else {
+        friend = group.members[0];
+      }
+      if (!user.friendList.includes(friend)) {
+        setIsFriend(false);
+      }
+    }
+  }, [user, group]);
 
   useEffect(() => {
     async function getMessages() {
@@ -100,10 +118,14 @@ function ChatBox() {
               })}
             </div>
           </div>
-          <ChatInput
-            params={params.id}
-            setter={[messages, setMessages]}
-          ></ChatInput>
+          {isFriend ? (
+            <ChatInput
+              params={params.id}
+              setter={[messages, setMessages]}
+            ></ChatInput>
+          ) : (
+            <p>You are not their friend. Add them to start chatting</p>
+          )}
         </div>
       ) : (
         <div id={styles.noGroup}>Add friend and chat now</div>

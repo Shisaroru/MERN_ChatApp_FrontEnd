@@ -28,7 +28,9 @@ function Contact() {
       <SideNav></SideNav>
       <div className={styles.optionsContainer}>
         <div
-          className={styles.option}
+          className={
+            styles.option + " " + (showContacts ? styles.active : null)
+          }
           onClick={() => {
             setShowRequests(false);
             setShowSentRequests(false);
@@ -41,7 +43,9 @@ function Contact() {
           <p>Contacts</p>
         </div>
         <div
-          className={styles.option}
+          className={
+            styles.option + " " + (showRequests ? styles.active : null)
+          }
           onClick={() => {
             setShowRequests(true);
             setShowSentRequests(false);
@@ -55,7 +59,9 @@ function Contact() {
           <p>Requests</p>
         </div>
         <div
-          className={styles.option}
+          className={
+            styles.option + " " + (showSentRequests ? styles.active : null)
+          }
           onClick={() => {
             setShowSentRequests(true);
             setShowRequests(false);
@@ -69,7 +75,7 @@ function Contact() {
           <p>Sent requests</p>
         </div>
       </div>
-      <div>
+      <div className={styles.result}>
         {showRequests
           ? user.requests.map((value) => {
               return (

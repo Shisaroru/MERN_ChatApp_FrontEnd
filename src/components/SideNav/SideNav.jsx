@@ -26,6 +26,7 @@ function SideNav() {
     setLogin(false);
     setUser({});
     data.accessToken.current = "";
+    data.setSocket(null);
   };
 
   return (

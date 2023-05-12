@@ -62,7 +62,7 @@
   align-items: center;
   border: 2px solid rgb(0, 145, 255);
   border-radius: 10px;
-  background-color: rgba(207, 207, 207, 0.6);
+  background-color: rgba(0, 145, 255, 0.4);
 }
 
 .icon {

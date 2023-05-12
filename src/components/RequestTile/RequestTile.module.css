@@ -1,0 +1,70 @@
+.container {
+  width: 75%;
+  display: grid;
+  grid-template-columns: 1fr 4fr 4fr;
+  grid-template-rows: 1fr 1fr;
+  margin: 10px 0;
+  align-items: center;
+  border: 2px solid rgb(0, 145, 255);
+  border-radius: 10px;
+  background-color: rgba(0, 145, 255, 0.4);
+}
+
+.containerContact {
+  width: 75%;
+  display: grid;
+  grid-template-columns: 1fr 4fr 4fr;
+  margin: 10px 0;
+  align-items: center;
+  border: 2px solid rgb(0, 145, 255);
+  border-radius: 10px;
+  background-color: rgba(0, 145, 255, 0.4);
+}
+
+.message {
+  grid-column: 1 / span 3;
+  background-color: white;
+  padding: 10px;
+  border-radius: 15px;
+  margin: 10px;
+}
+
+.icon {
+  font-size: 2em;
+  justify-self: center;
+}
+
+.button {
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  margin: 0 5px;
+}
+
+.button:hover {
+  border: 2px solid rgb(0, 145, 255);
+}
+
+.buttonGreen {
+  background-color: rgb(93, 212, 57);
+  color: white;
+  transition: background-color 0.15s ease-out;
+}
+
+.buttonGreen:hover {
+  background-color: rgba(93, 212, 57, 0.8);
+}
+
+.buttonRed {
+  background-color: rgb(204, 69, 69);
+  color: white;
+  transition: background-color 0.15s ease-out;
+}
+
+.buttonRed:hover {
+  background-color: rgba(204, 69, 69, 0.8);
+}
+
+.buttonGroup {
+  justify-self: start;
+}

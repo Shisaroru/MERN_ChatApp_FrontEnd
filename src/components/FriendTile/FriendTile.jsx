@@ -4,6 +4,8 @@ import { FaRegUserCircle } from "react-icons/fa";
 
 import { GlobalState } from "../../GlobalState";
 
+import styles from "../RequestTile/RequestTile.module.css";
+
 function FriendTile({ id }) {
   const data = useContext(GlobalState);
   const [user, setUser] = data.user;
@@ -54,10 +56,16 @@ function FriendTile({ id }) {
   };
 
   return (
-    <div>
-      <FaRegUserCircle></FaRegUserCircle>
+    <div className={styles.containerContact}>
+      <FaRegUserCircle className={styles.icon}></FaRegUserCircle>
       <h3>{friend.name}</h3>
-      <button type="button" onClick={unFriend}>
+      <button
+        type="button"
+        onClick={unFriend}
+        className={
+          styles.button + " " + styles.buttonRed + " " + styles.buttonGroup
+        }
+      >
         Unfriend
       </button>
     </div>

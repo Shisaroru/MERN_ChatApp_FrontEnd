@@ -4,10 +4,13 @@ import { FaRegUserCircle } from "react-icons/fa";
 
 import { GlobalState } from "../../GlobalState";
 
+import styles from "./RequestTile.module.css";
+
 function RequestTile({ request, sentByMe }) {
   const data = useContext(GlobalState);
   const [user, setUser] = data.user;
   const [friendUser, setFriendUser] = useState({});
+  const [requestData, setRequestData] = useState({});
 
   const cancelRequest = async () => {
     try {
@@ -49,7 +52,7 @@ function RequestTile({ request, sentByMe }) {
       setUser({
         ...user,
         groupList: [...user.groupList, response.data.createdGroup._id],
-        friendList: [...user.friendList, response.data.friendUser._id],
+        friendList: [...user.friendList, response.data.user._id],
         requests: newRequestArray,
       });
     } catch (error) {
@@ -107,6 +110,7 @@ function RequestTile({ request, sentByMe }) {
           }
         );
 
+        setRequestData(responseRequest.data.result);
         setFriendUser(responseUser.data.result);
       } catch (error) {
         console.log(error);
@@ -118,25 +122,41 @@ function RequestTile({ request, sentByMe }) {
   return (
     <>
       {sentByMe ? (
-        <div>
-          <FaRegUserCircle></FaRegUserCircle>
+        <div className={styles.container}>
+          <FaRegUserCircle className={styles.icon}></FaRegUserCircle>
           <h3>{friendUser.name}</h3>
-          <button type="button" onClick={cancelRequest}>
+          <button
+            type="button"
+            onClick={cancelRequest}
+            className={
+              styles.button + " " + styles.buttonRed + " " + styles.buttonGroup
+            }
+          >
             Cancel request
           </button>
+          <div className={styles.message}>{requestData.message}</div>
         </div>
       ) : (
-        <div>
-          <FaRegUserCircle></FaRegUserCircle>
+        <div className={styles.container}>
+          <FaRegUserCircle className={styles.icon}></FaRegUserCircle>
           <h3>{friendUser.name}</h3>
-          <div>
-            <button type="button" onClick={acceptRequest}>
+          <div className={styles.buttonGroup}>
+            <button
+              type="button"
+              onClick={acceptRequest}
+              className={styles.button + " " + styles.buttonGreen}
+            >
               Accept request
             </button>
-            <button type="button" onClick={declineRequest}>
+            <button
+              type="button"
+              onClick={declineRequest}
+              className={styles.button + " " + styles.buttonRed}
+            >
               Decline request
             </button>
           </div>
+          <div className={styles.message}>{requestData.message}</div>
         </div>
       )}
     </>

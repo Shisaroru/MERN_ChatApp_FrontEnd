@@ -84,6 +84,7 @@ function DataProvider(props) {
     groupsData: [groups, setGroups],
     loginStatus: [login, setLogin],
     socket,
+    setSocket,
   };
 
   return (
