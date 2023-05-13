@@ -57,6 +57,28 @@ function DataProvider(props) {
             console.log(err.message); // prints the message associated with the error
           });
 
+          newSocket.on("joined_user", (groupId) => {
+            setUser({ ...user, groupList: [...user.groupList, groupId] });
+          });
+
+          newSocket.on("new_request", (requestId) => {
+            setUser({ ...user, requests: [...user.requests, requestId] });
+          });
+
+          newSocket.on("cancel_request", (requestId) => {
+            const newRequests = user.requests.filter(
+              (value) => value !== requestId
+            );
+            setUser({ ...user, requests: newRequests });
+          });
+
+          newSocket.on("decline_request", (requestId) => {
+            const newSentRequests = user.sentRequests.filter(
+              (value) => value !== requestId
+            );
+            setUser({ ...user, sentRequests: newSentRequests });
+          });
+
           newSocket.emit("joined_groups", groupsResponse.data.result);
           setSocket(newSocket);
         }
@@ -68,6 +90,10 @@ function DataProvider(props) {
           if (socket) {
             socket.disconnect();
             socket.removeAllListeners("connect_error");
+            socket.removeAllListeners("joined_user");
+            socket.removeAllListeners("new_request");
+            socket.removeAllListeners("cancel_request");
+            socket.removeAllListeners("decline_request");
           }
         };
       } catch (error) {

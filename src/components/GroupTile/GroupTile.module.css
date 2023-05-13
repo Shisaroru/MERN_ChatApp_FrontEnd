@@ -27,6 +27,24 @@
 
 .groupName {
   font-size: 1em !important;
+  width: 80%;
+}
+
+.notify {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  right: 25px;
+  top: 5px;
+  background-color: red;
+  color: white;
+  border-radius: 30px;
+}
+
+.notify p {
+  position: relative;
+  bottom: 10px;
+  left: 6px;
 }
 
 .groupText > * {
@@ -35,6 +53,7 @@
 }
 
 .groupText {
+  position: relative;
   width: 100%;
 }
 

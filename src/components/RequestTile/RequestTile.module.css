@@ -68,3 +68,17 @@
 .buttonGroup {
   justify-self: start;
 }
+
+.online {
+  font-weight: normal;
+  font-size: 0.6em;
+  margin-left: 10px;
+  color: green;
+}
+
+.offline {
+  font-weight: normal;
+  font-size: 0.6em;
+  margin-left: 10px;
+  color: red;
+}

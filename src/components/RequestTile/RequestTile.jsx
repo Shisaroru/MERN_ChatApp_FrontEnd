@@ -26,6 +26,7 @@ function RequestTile({ request, sentByMe }) {
         (value) => value !== request
       );
       setUser({ ...user, sentRequests: newSentRequestArray });
+      data.socket.emit("cancel_request", request, requestData.targetUser);
     } catch (error) {
       console.log(error);
     }
@@ -55,6 +56,12 @@ function RequestTile({ request, sentByMe }) {
         friendList: [...user.friendList, response.data.user._id],
         requests: newRequestArray,
       });
+      data.socket.emit("joined_group", [response.data.createdGroup._id]);
+      data.socket.emit(
+        "joined_user",
+        response.data.user._id,
+        response.data.createdGroup._id
+      );
     } catch (error) {
       console.log(error);
     }
@@ -73,6 +80,7 @@ function RequestTile({ request, sentByMe }) {
       const newRequestArray = user.requests.filter(
         (value) => value !== request
       );
+      data.socket.emit("decline_request", request, requestData.requestee);
       setUser({ ...user, requests: newRequestArray });
     } catch (error) {
       console.log(error);

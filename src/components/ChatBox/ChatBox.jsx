@@ -20,6 +20,7 @@ function ChatBox() {
   const [groups, setGroups] = data.groupsData;
   const [user, setUser] = data.user;
   const [isFriend, setIsFriend] = useState(true);
+  const [onlineStatus, setOnlineStatus] = useState(false);
 
   useEffect(() => {
     if (!user || !group) {
@@ -59,6 +60,25 @@ function ChatBox() {
           return element._id === params.id;
         });
 
+        let friendId;
+        if (found.members[0] === user._id) {
+          friendId = found.members[1];
+        } else {
+          friendId = found.members[0];
+        }
+        data.socket.on("offline", (id) => {
+          if (found.members.includes(id)) {
+            setOnlineStatus(false);
+          }
+        });
+        data.socket.on("online", (id) => {
+          if (found.members.includes(id)) {
+            setOnlineStatus(true);
+          }
+        });
+
+        data.socket.emit("checkOnline", friendId);
+
         setGroupName(found.name.split(","));
         setGroup(found);
         setMessages(response.data.messagesList);
@@ -67,6 +87,12 @@ function ChatBox() {
       }
     }
     getMessages();
+    return () => {
+      if (data.socket) {
+        data.socket.removeAllListeners("online");
+        data.socket.removeAllListeners("offline");
+      }
+    };
   }, [params.id]);
 
   useEffect(() => {
@@ -91,11 +117,28 @@ function ChatBox() {
     };
   }, [messages, data.socket]);
 
+  const formatTime = (time) => {
+    if (parseInt(time) < 10) {
+      return "0" + time;
+    } else {
+      return time;
+    }
+  };
+
   return (
     <>
       {params.id ? (
         <div className={styles.container}>
-          <p>{groupName[0] === user.name ? groupName[1] : groupName[0]}</p>
+          <div>
+            <p className={styles.groupName}>
+              {groupName[0] === user.name ? groupName[1] : groupName[0]}
+            </p>
+            {onlineStatus ? (
+              <p className={styles.online}>● online</p>
+            ) : (
+              <p className={styles.offline}>● offline</p>
+            )}
+          </div>
           <div id={styles.container} ref={scrollChat}>
             <div className={styles.chatContainer}>
               {messages.map((message) => {
@@ -111,7 +154,9 @@ function ChatBox() {
                   >
                     {message.message}
                     <p className={styles.time}>
-                      {date.getHours() + ":" + date.getMinutes()}
+                      {formatTime(date.getHours()) +
+                        ":" +
+                        formatTime(date.getMinutes())}
                     </p>
                   </div>
                 );

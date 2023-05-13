@@ -50,6 +50,7 @@ function SearchResultTile({ resultUser }) {
       setModal(false);
       setIntersectSentRequests([response.data.result._id]);
       alert("Request sent");
+      data.socket.emit("new_request", response.data.result._id, resultUser._id);
     } catch (error) {
       console.log(error);
     }
@@ -70,6 +71,12 @@ function SearchResultTile({ resultUser }) {
       );
       setUser({ ...user, sentRequests: newSentRequestArray });
       setIntersectSentRequests([]);
+
+      data.socket.emit(
+        "cancel_request",
+        intersectSentRequests[0],
+        resultUser._id
+      );
     } catch (error) {
       console.log(error);
     }
@@ -90,6 +97,7 @@ function SearchResultTile({ resultUser }) {
       );
       setUser({ ...user, requests: newRequestArray });
       setIntersectRequests([]);
+      data.socket.emit("decline_request", intersectRequests[0], resultUser._id);
     } catch (error) {
       console.log(error);
     }
@@ -118,6 +126,12 @@ function SearchResultTile({ resultUser }) {
         friendList: [...user.friendList, result.data.user._id],
         requests: newRequestArray,
       });
+      data.socket.emit("joined_group", [result.data.createdGroup._id]);
+      data.socket.emit(
+        "joined_user",
+        result.data.user._id,
+        result.data.createdGroup._id
+      );
       setIntersectRequests([]);
       setAlreadyFriend(true);
     } catch (error) {

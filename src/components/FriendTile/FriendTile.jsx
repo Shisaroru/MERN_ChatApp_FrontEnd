@@ -10,6 +10,7 @@ function FriendTile({ id }) {
   const data = useContext(GlobalState);
   const [user, setUser] = data.user;
   const [friend, setFriend] = useState({});
+  const [onlineStatus, setOnlineStatus] = useState(false);
 
   useEffect(() => {
     async function getUser() {
@@ -32,6 +33,23 @@ function FriendTile({ id }) {
       }
     }
     getUser();
+    data.socket.on("offline", (receiveId) => {
+      if (id === receiveId) {
+        setOnlineStatus(false);
+      }
+    });
+    data.socket.on("online", (receiveId) => {
+      if (id === receiveId) {
+        setOnlineStatus(true);
+      }
+    });
+    data.socket.emit("checkOnline", id);
+    return () => {
+      if (data.socket) {
+        data.socket.removeAllListeners("online");
+        data.socket.removeAllListeners("offline");
+      }
+    };
   }, [id]);
 
   const unFriend = async () => {
@@ -58,7 +76,14 @@ function FriendTile({ id }) {
   return (
     <div className={styles.containerContact}>
       <FaRegUserCircle className={styles.icon}></FaRegUserCircle>
-      <h3>{friend.name}</h3>
+      <h3>
+        {friend.name}
+        {onlineStatus ? (
+          <span className={styles.online}>● online</span>
+        ) : (
+          <span className={styles.offline}>● offline</span>
+        )}
+      </h3>
       <button
         type="button"
         onClick={unFriend}
